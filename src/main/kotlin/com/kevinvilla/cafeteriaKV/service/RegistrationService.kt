@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import com.kevinvilla.cafeteriaKV.repository.RegistrationRepository
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class RegistrationService {
@@ -31,12 +33,23 @@ class RegistrationService {
     }
 
     fun updateDescription(registration: Registration): Registration {
-        val response = registrationRepository.findById(registration.id) ?: throw Exception()
-        response.apply {
-            this.fecha=registration.fecha
+        try {
+            if (registration.fecha.equals("")){
+                throw Exception("se debe tener en cuenta la fecha")
+            }
+            val response = registrationRepository.findById(registration.id)
+                    ?: throw Exception("El id ${registration.id} en dieta no existe")
+            response.apply {
+                this.fecha = registration.fecha
+            }
+            return registrationRepository.save(registration)
         }
-        return registrationRepository.save(response)
-    }
+        catch (ex: Exception) {
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.message, ex)
+        }
+        }
+
 
 
 

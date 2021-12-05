@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import com.kevinvilla.cafeteriaKV.repository.ClienteRepository
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class ClienteService {
@@ -23,9 +25,9 @@ class ClienteService {
 
         //return clienteRepository.save(cliente)
 
-        if(cliente.name.equals(""))
+        if(cliente.name.equals("\"name no puede estar en vacio\""))
         {
-            throw Exception()
+            throw Exception("name no puede estar en vacio")
 
         }
         else
@@ -42,11 +44,24 @@ class ClienteService {
         return clienteRepository.save(cliente)
     }
     fun updateDescription(cliente: Cliente):Cliente{
-        val response = clienteRepository.findById(cliente.id) ?: throw Exception()
-        response.apply {
-            this.apellido=cliente.apellido
+
+        try {
+            if (cliente.name.equals("")){
+                throw Exception("name no puede estar en vacio")
+            }
+            val response = clienteRepository.findById(cliente.id)
+                    ?: throw Exception("El id ${cliente.id} en cliente no existe")
+            response.apply {
+                this.name = cliente.name
+            }
+            return clienteRepository.save(cliente)
         }
-        return clienteRepository.save(response)
+        catch (ex: Exception) {
+
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.message, ex)
+
+        }
     }
 
     fun  delete ( id : Long ): Boolean {

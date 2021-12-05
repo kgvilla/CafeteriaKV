@@ -14,7 +14,7 @@ class Registration {
     var fecha: String? = null
     var hora: String? = null
     @Column(name = "cliente_id")
-    var clienteid: String? = null
+    var clienteid: Long? = null
     @Column(name = "cafeteria_id")
-    var cafeteria_id: String? = null
+    var cafeteria_id: Long? = null
 }

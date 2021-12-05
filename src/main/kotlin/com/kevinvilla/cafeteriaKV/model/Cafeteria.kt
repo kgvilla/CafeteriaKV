@@ -9,7 +9,7 @@ class Cafeteria {
     @Id
     @Column(updatable = false)
     var id: Long? = null
-    var registration: String? = null
+    var registro: String? = null
     var client: String? = null
     var entrega: String? = null
 }

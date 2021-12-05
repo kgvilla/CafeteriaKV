@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import com.kevinvilla.cafeteriaKV.repository.CafeteriaRepository
+import org.springframework.http.HttpStatus
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class CafeteriaService {
@@ -30,11 +32,21 @@ class CafeteriaService {
     }
 
     fun updateDescription(cafeteria: Cafeteria):Cafeteria{
-        val response = cafeteriaRepository.findById(cafeteria.id) ?: throw Exception()
-        response.apply {
-            this.client=cafeteria.client
+        try {
+            if (cafeteria.registro.equals("")){
+                throw Exception("el registro debe estar completado")
+            }
+            val response = cafeteriaRepository.findById(cafeteria.id)
+                    ?: throw Exception("El id ${cafeteria.id} en dieta no existe")
+            response.apply {
+                this.registro = cafeteria.registro
+            }
+            return cafeteriaRepository.save(cafeteria)
         }
-        return cafeteriaRepository.save(response)
+        catch (ex: Exception) {
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.message, ex)
+        }
     }
 
     fun  delete ( id : Long ): Boolean {
