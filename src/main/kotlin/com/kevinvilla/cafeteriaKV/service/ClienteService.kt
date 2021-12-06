@@ -25,9 +25,9 @@ class ClienteService {
 
         //return clienteRepository.save(cliente)
 
-        if(cliente.name.equals("\"name no puede estar en vacio\""))
+        if(cliente.cedula.equals("\"cedula no puede estar en vacio\""))
         {
-            throw Exception("name no puede estar en vacio")
+            throw Exception("cedula no puede estar en vacio")
 
         }
         else
@@ -46,8 +46,8 @@ class ClienteService {
     fun updateDescription(cliente: Cliente):Cliente{
 
         try {
-            if (cliente.cedula.equals("name")){
-                throw Exception("name no puede estar en vacio")
+            if (cliente.cedula.equals("")){
+                throw Exception("cedula no puede estar en vacio")
             }
             val response = clienteRepository.findById(cliente.id)
                     ?: throw Exception("El id ${cliente.id} en cliente no existe")

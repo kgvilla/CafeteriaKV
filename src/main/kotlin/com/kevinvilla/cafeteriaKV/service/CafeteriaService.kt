@@ -33,8 +33,8 @@ class CafeteriaService {
 
     fun updateDescription(cafeteria: Cafeteria):Cafeteria{
         try {
-            if (cafeteria.registro.equals("registro")){
-                throw Exception("el registro debe estar completado")
+            if (cafeteria.registro.equals("")){
+                throw Exception("el registro no debe estar vacio")
             }
             val response = cafeteriaRepository.findById(cafeteria.id)
                     ?: throw Exception("El id ${cafeteria.id} en cafeteria no existe")

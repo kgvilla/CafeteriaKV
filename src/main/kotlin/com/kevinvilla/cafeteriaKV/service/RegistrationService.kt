@@ -34,7 +34,7 @@ class RegistrationService {
 
     fun updateDescription(registration: Registration): Registration {
         try {
-            if (registration.fecha.equals("fecha")){
+            if (registration.fecha.equals("")){
                 throw Exception("se debe tener en cuenta la fecha")
             }
             val response = registrationRepository.findById(registration.id)
@@ -49,8 +49,6 @@ class RegistrationService {
                     HttpStatus.NOT_FOUND, ex.message, ex)
         }
         }
-
-
 
 
     fun delete (id:Long): Boolean{
