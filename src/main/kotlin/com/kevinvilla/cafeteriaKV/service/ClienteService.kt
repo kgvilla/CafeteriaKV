@@ -46,13 +46,13 @@ class ClienteService {
     fun updateDescription(cliente: Cliente):Cliente{
 
         try {
-            if (cliente.name.equals("")){
+            if (cliente.cedula.equals("name")){
                 throw Exception("name no puede estar en vacio")
             }
             val response = clienteRepository.findById(cliente.id)
                     ?: throw Exception("El id ${cliente.id} en cliente no existe")
             response.apply {
-                this.name = cliente.name
+                this.cedula = cliente.cedula
             }
             return clienteRepository.save(cliente)
         }

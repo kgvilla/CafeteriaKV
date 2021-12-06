@@ -34,11 +34,11 @@ class RegistrationService {
 
     fun updateDescription(registration: Registration): Registration {
         try {
-            if (registration.fecha.equals("")){
+            if (registration.fecha.equals("fecha")){
                 throw Exception("se debe tener en cuenta la fecha")
             }
             val response = registrationRepository.findById(registration.id)
-                    ?: throw Exception("El id ${registration.id} en dieta no existe")
+                    ?: throw Exception("El id ${registration .id} en dieta no existe")
             response.apply {
                 this.fecha = registration.fecha
             }
