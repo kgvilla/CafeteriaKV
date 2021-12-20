@@ -46,9 +46,13 @@ class ClienteService {
     fun updateDescription(cliente: Cliente):Cliente{
 
         try {
+            cliente.cedula?.trim()?.isEmpty()
+                 ?: throw Exception("cedula no puede estar en vacio")
+
             if (cliente.cedula.equals("")){
-                throw Exception("cedula no puede estar en vacio")
+                throw Exception("ecedula no puede estar en vacio")
             }
+
             val response = clienteRepository.findById(cliente.id)
                     ?: throw Exception("El id ${cliente.id} en cliente no existe")
             response.apply {
