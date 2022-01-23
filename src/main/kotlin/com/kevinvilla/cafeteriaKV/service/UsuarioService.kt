@@ -1,8 +1,6 @@
 package com.kevinvilla.cafeteriaKV.service
 
-
 import com.kevinvilla.cafeteriaKV.model.Usuario
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -22,9 +20,21 @@ class UsuarioService {
         return usuarioRepository.findAll()
     }
 
+    fun save(usuario: Usuario): Usuario{
+
+
+        return usuarioRepository.save(usuario)
+    }
+
+
+
+
+
+
     fun getUsuario (username: String?): Usuario? {
 
         try {
+
             val response = usuarioRepository.findByUsername(username)
                     ?: throw Exception("Usuario no exixte")
             return response
@@ -41,5 +51,63 @@ class UsuarioService {
         return usuarioRepository.save(usuario)
     }
 
+    fun verificar(username: String?): Boolean{
+        if(username?.length!!>7){
+           return false
+
+        }
+        return true
+    }
+
+    fun calMultiplication(index: Int, number: Int):Int{
+        if (index %2 ==0){
+            return number *2
+
+        }
+        else{
+            return number
+        }
+
+        }
+
+    fun restNine(number: Int):Int{
+        if (number >=10){
+            return number -9
+        }
+        return number
+
+    }
+
+    fun subtactFromNextTen(number: Int):Int{
+        var decena = (number/10) +1
+        var response = (decena+10) - number
+
+        if (response == 10){
+            return 0
+        }
+        return response
+    }
+
+    fun verificedula(cedula: String): Boolean{
+        if(cedula?.length!!>=10){
+
+        }
+        return true
+    }
+
+    fun cedulaIncorrect(cedula: String): Boolean{
+        if(cedula?.length!!>11){
+
+        }
+        return false
+    }
+
+
 
 }
+
+
+
+
+
+

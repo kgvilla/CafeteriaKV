@@ -23,7 +23,15 @@ class CafeteriaService {
     @PostMapping
     fun save (@RequestBody cafeteria: Cafeteria): Cafeteria {
 
-        return cafeteriaRepository.save(cafeteria)
+        try {
+            cafeteria.entrega?.takeIf {it.trim()?.isNotEmpty()}
+                    ?: throw Exception("se debe tener en cuenta la entrega")
+            return cafeteriaRepository.save(cafeteria)
+        }
+        catch (ex: Exception) {
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.message, ex)
+        }
     }
 
 
@@ -33,12 +41,8 @@ class CafeteriaService {
 
     fun updateDescription(cafeteria: Cafeteria):Cafeteria{
         try {
-            cafeteria.registro?.trim()?.isEmpty()
+            cafeteria.registro?.takeIf {it.trim()?.isNotEmpty()}
                 ?: throw Exception("el registro no debe estar vacio")
-
-            if (cafeteria.registro.equals("")){
-                 throw Exception("el registro no debe estar vacio")
-            }
 
             val response = cafeteriaRepository.findById(cafeteria.id)
                     ?: throw Exception("El id ${cafeteria.id} en cafeteria no existe")
@@ -58,4 +62,4 @@ class CafeteriaService {
         return  true
     }
 
-}
+    }

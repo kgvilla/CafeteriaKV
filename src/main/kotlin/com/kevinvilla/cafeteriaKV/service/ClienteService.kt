@@ -22,36 +22,24 @@ class ClienteService {
 
     @PostMapping
     fun save(@RequestBody cliente: Cliente): Cliente {
-
-        //return clienteRepository.save(cliente)
-
-        if(cliente.cedula.equals("\"cedula no puede estar en vacio\""))
-        {
-            throw Exception("cedula no puede estar en vacio")
-
-        }
-        else
-        {
+        try {
+            cliente.cedula?.takeIf {it.trim()?.isNotEmpty()}
+                    ?: throw Exception("se debe tener en cuenta la cedula del cliente")
             return clienteRepository.save(cliente)
         }
+        catch (ex: Exception) {
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.message, ex)
+        }
     }
-
-
-
-
 
     fun update(cliente: Cliente):Cliente{
         return clienteRepository.save(cliente)
     }
     fun updateDescription(cliente: Cliente):Cliente{
-
         try {
-            cliente.cedula?.trim()?.isEmpty()
+            cliente.cedula?.takeIf {it.trim()?.isNotEmpty()}
                  ?: throw Exception("cedula no puede estar en vacio")
-
-            if (cliente.cedula.equals("")){
-                throw Exception("ecedula no puede estar en vacio")
-            }
 
             val response = clienteRepository.findById(cliente.id)
                     ?: throw Exception("El id ${cliente.id} en cliente no existe")
@@ -64,7 +52,6 @@ class ClienteService {
 
             throw ResponseStatusException(
                     HttpStatus.NOT_FOUND, ex.message, ex)
-
         }
     }
 

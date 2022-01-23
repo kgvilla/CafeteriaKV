@@ -1,6 +1,8 @@
 package com.kevinvilla.cafeteriaKV.service
 
 import com.kevinvilla.cafeteriaKV.model.Registration
+import com.kevinvilla.cafeteriaKV.repository.CafeteriaRepository
+import com.kevinvilla.cafeteriaKV.repository.ClienteRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.PostMapping
@@ -14,6 +16,11 @@ class RegistrationService {
     @Autowired
     lateinit var registrationRepository: RegistrationRepository
 
+
+
+    @Autowired
+    lateinit var clienteRepository: ClienteRepository
+
     fun list(): List<Registration> {
 
         return registrationRepository.findAll()
@@ -22,40 +29,42 @@ class RegistrationService {
 
     @PostMapping
     fun save (@RequestBody registration: Registration): Registration {
-
-        return registrationRepository.save(registration)
-    }
-
-
-
-    fun update(registration: Registration):Registration{
-        return registrationRepository.save(registration)
-    }
-
-    fun updateDescription(registration: Registration): Registration {
         try {
+            registration.lugar?.takeIf {it.trim()?.isNotEmpty()}
+                    ?: throw Exception("se debe tener en cuenta el lugar")
 
-            registration.fecha?.trim()?.isEmpty()
-                ?: throw Exception("se debe tener en cuenta la fecha")
 
-            if (registration.fecha.equals("")){
-                throw Exception("se debe tener en cuenta la fecha")
-            }
 
-            val response = registrationRepository.findById(registration.id)
-                    ?: throw Exception("El id ${registration .id} en dieta no existe")
-            response.apply {
-                this.fecha = registration.fecha
-            }
-            return registrationRepository.save(registration)
+
+
+        return registrationRepository.save(registration)
         }
         catch (ex: Exception) {
             throw ResponseStatusException(
                     HttpStatus.NOT_FOUND, ex.message, ex)
         }
+    }
+
+
+
+    fun updateDescription(registration: Registration): Registration {
+        try {
+            registration.lugar?.takeIf {it.trim()?.isNotEmpty()}
+                ?: throw Exception("se debe tener en cuenta el lugar")
+            val response = registrationRepository.findById(registration.id)
+                    ?: throw Exception("El id ${registration .lugar} en registration no existe")
+            response.apply {
+                this.lugar= registration.lugar
+            }
+            return registrationRepository.save(registration)
+
+
         }
-
-
+        catch (ex: Exception) {
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.message, ex)
+        }
+    }
     fun delete (id:Long): Boolean{
         registrationRepository.deleteById(id)
         return true

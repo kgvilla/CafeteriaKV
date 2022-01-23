@@ -27,10 +27,8 @@ class RegistrationController {
 
     }
 
-    @PutMapping
-    fun update (@RequestBody registration: Registration):Registration{
-        return registrationService.update(registration)
-    }
+
+
 
     @PatchMapping
     fun patch(@RequestBody registration: Registration):Registration{
