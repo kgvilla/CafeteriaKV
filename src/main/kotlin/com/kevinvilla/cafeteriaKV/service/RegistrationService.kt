@@ -16,7 +16,8 @@ class RegistrationService {
     @Autowired
     lateinit var registrationRepository: RegistrationRepository
 
-
+    @Autowired
+    lateinit var cafeteriaRepository: CafeteriaRepository
 
     @Autowired
     lateinit var clienteRepository: ClienteRepository
@@ -32,17 +33,16 @@ class RegistrationService {
         try {
             registration.lugar?.takeIf {it.trim()?.isNotEmpty()}
                     ?: throw Exception("se debe tener en cuenta el lugar")
-
-
-
-
-
         return registrationRepository.save(registration)
         }
         catch (ex: Exception) {
             throw ResponseStatusException(
                     HttpStatus.NOT_FOUND, ex.message, ex)
         }
+    }
+
+    fun update(registration: Registration):Registration{
+        return registrationRepository.save(registration)
     }
 
 
@@ -53,6 +53,14 @@ class RegistrationService {
                 ?: throw Exception("se debe tener en cuenta el lugar")
             val response = registrationRepository.findById(registration.id)
                     ?: throw Exception("El id ${registration .lugar} en registration no existe")
+
+            cafeteriaRepository.findById(registration.cafeteria_id)
+                    ?: throw Exception("se debe tener en cuenta el lugar")
+
+            clienteRepository.findById(registration.clienteid)
+                    ?: throw Exception("se debe tener en cuenta el lugar")
+
+
             response.apply {
                 this.lugar= registration.lugar
             }

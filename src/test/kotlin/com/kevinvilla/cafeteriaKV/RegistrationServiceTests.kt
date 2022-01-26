@@ -79,8 +79,31 @@ class RegistrationServiceTests {
 			Mockito.`when`(registrationRepository.save(Mockito.any(Registration::class.java))).thenReturn(registrationMock)
 			registrationService.save(registrationMock)
 		}
+	}
+
+	@Test
+	fun UpdateIsCorrect() {
+			Mockito.`when`(registrationRepository.findById(registrationMock.id)).thenReturn(registrationMock)
+			Mockito.`when`(registrationRepository.save(Mockito.any(Registration::class.java))).thenReturn(registrationMock)
+			registrationService.updateDescription(registrationMock)
+			val response = registrationService.save(registrationMock)
+			Assertions.assertEquals(response.id, registrationMock.id)
+			Assertions.assertEquals(response.lugar, registrationMock.lugar)
+			Assertions.assertEquals(response.fecha, registrationMock.fecha)
+			Assertions.assertEquals(response.hora, registrationMock.hora)
+			Assertions.assertEquals(response.clienteid, registrationMock.clienteid)
+			Assertions.assertEquals(response.cafeteria_id, registrationMock.cafeteria_id,)
+	}
+
+	@Test
+	fun UpdateIsFailed() {
+		Assertions.assertThrows(Exception::class.java) {
+			Mockito.`when`(registrationRepository.findById(registrationMock.id)).thenReturn(null)
+			Mockito.`when`(registrationRepository.save(Mockito.any(Registration::class.java))).thenReturn(registrationMock)
+			registrationService.updateDescription(registrationMock)
 
 
+		}
 	}
 }
 

@@ -9,7 +9,6 @@ class Cliente {
     @Id
     @Column(updatable = false)
     var id: Long? = null
-
     var name: String? = null
     var apellido: String? = null
     var cedula: String? = null

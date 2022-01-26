@@ -74,9 +74,37 @@ class ClienteServiceTests {
 			Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
 			clienteService.save(clienteMock)
 		}
+	}
+
+	@Test
+	fun UpdateIsEntrega() {
+		Mockito.`when`(clienteRepository.findById(clienteMock.id)).thenReturn(clienteMock)
+		Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
+		clienteService.update(clienteMock)
+		val response = clienteService.save(clienteMock)
+		Assertions.assertEquals(response.id, clienteMock.id)
+		Assertions.assertEquals(response.name, clienteMock.name)
+		Assertions.assertEquals(response.apellido, clienteMock.apellido)
+		Assertions.assertEquals(response.cedula, clienteMock.cedula)
+
 
 
 	}
+
+	@Test
+	fun UpdateIsFailedEntrega() {
+		Assertions.assertThrows(Exception::class.java) {
+			Mockito.`when`(clienteRepository.findById(clienteMock.id)).thenReturn(null)
+			Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
+			clienteService.updateDescription(clienteMock)
+
+		}
+	}
+
+
+
+
+
 }
 
 

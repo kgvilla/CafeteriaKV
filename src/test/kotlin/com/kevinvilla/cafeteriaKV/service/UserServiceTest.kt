@@ -12,8 +12,6 @@ class UserServiceTest {
     @Autowired
     lateinit var usuarioService: UsuarioService
 
-
-
     @Test
     fun calMultiplicationIfIsPair(){
         val response = usuarioService.calMultiplication(2,4)

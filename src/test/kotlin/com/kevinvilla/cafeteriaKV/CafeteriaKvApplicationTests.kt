@@ -2,6 +2,7 @@ package com.kevinvilla.cafeteriaKV
 
 import com.google.gson.Gson
 import com.kevinvilla.cafeteriaKV.model.Cafeteria
+import com.kevinvilla.cafeteriaKV.model.Registration
 import com.kevinvilla.cafeteriaKV.repository.CafeteriaRepository
 import com.kevinvilla.cafeteriaKV.service.CafeteriaService
 import com.kevinvilla.cafeteriaKV.service.UsuarioService
@@ -66,9 +67,36 @@ class CafeteriaKvApplicationTests {
 			Mockito.`when`(cafeteriaRepository.save(Mockito.any(Cafeteria::class.java))).thenReturn(cafeteriaMock)
 			cafeteriaService.save(cafeteriaMock)
 		}
+	}
+
+	@Test
+	fun UpdateIsEntrega() {
+		Mockito.`when`(cafeteriaRepository.findById(cafeteriaMock.id)).thenReturn(cafeteriaMock)
+		Mockito.`when`(cafeteriaRepository.save(Mockito.any(Cafeteria::class.java))).thenReturn(cafeteriaMock)
+		cafeteriaService.update(cafeteriaMock)
+		val response = cafeteriaService.save(cafeteriaMock)
+		Assertions.assertEquals(response.id, cafeteriaMock.id)
+		Assertions.assertEquals(response.registro, cafeteriaMock.registro)
+		Assertions.assertEquals(response.client, cafeteriaMock.client)
+		Assertions.assertEquals(response.entrega, cafeteriaMock.entrega)
+
 
 
 	}
+
+
+
+	@Test
+	fun UpdateIsFailedEntrega() {
+		Assertions.assertThrows(Exception::class.java) {
+			Mockito.`when`(cafeteriaRepository.findById(cafeteriaMock.id)).thenReturn(null)
+			Mockito.`when`(cafeteriaRepository.save(Mockito.any(Cafeteria::class.java))).thenReturn(cafeteriaMock)
+			cafeteriaService.updateDescription(cafeteriaMock)
+
+		}
+	}
+
+
 }
 
 
