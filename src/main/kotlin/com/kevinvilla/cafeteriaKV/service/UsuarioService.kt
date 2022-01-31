@@ -136,15 +136,7 @@ class UsuarioService {
 
     }
 
-    fun validaUser(id: Long?): String {
 
-        try {
-            val lista = listOf<String>()
-            return "no existe"
-
-        }
-
-    }
 }
 
 
