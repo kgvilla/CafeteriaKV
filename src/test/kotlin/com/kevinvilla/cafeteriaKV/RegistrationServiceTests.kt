@@ -85,7 +85,7 @@ class RegistrationServiceTests {
 	fun UpdateIsCorrect() {
 			Mockito.`when`(registrationRepository.findById(registrationMock.id)).thenReturn(registrationMock)
 			Mockito.`when`(registrationRepository.save(Mockito.any(Registration::class.java))).thenReturn(registrationMock)
-			registrationService.updateDescription(registrationMock)
+			registrationService.update(registrationMock)
 			val response = registrationService.save(registrationMock)
 			Assertions.assertEquals(response.id, registrationMock.id)
 			Assertions.assertEquals(response.lugar, registrationMock.lugar)
@@ -105,6 +105,27 @@ class RegistrationServiceTests {
 
 		}
 	}
+
+	@Test
+	fun deleteId() {
+		Mockito.`when`(registrationRepository.findById(registrationMock.id)).thenReturn(registrationMock)
+		Mockito.`when`(registrationRepository.save(Mockito.any(Registration::class.java))).thenReturn(registrationMock)
+		val response = registrationService.delete(registrationMock.id)
+		Assertions.assertEquals(response, true)
+	}
+
+	@Test
+	fun deleteIsFailed() {
+
+		Assertions.assertThrows(Exception::class.java){
+		Mockito.`when`(registrationRepository.findById(registrationMock.id)).thenReturn(null)
+		Mockito.`when`(registrationRepository.save(Mockito.any(Registration::class.java))).thenReturn(registrationMock)
+		val response = registrationService.delete(registrationMock.id)
+		Assertions.assertEquals(response, true)
+
+		}
+	}
+
 }
 
 

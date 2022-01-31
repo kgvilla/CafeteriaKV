@@ -3,6 +3,7 @@ package com.kevinvilla.cafeteriaKV
 import com.google.gson.Gson
 import com.kevinvilla.cafeteriaKV.model.Cafeteria
 import com.kevinvilla.cafeteriaKV.model.Cliente
+import com.kevinvilla.cafeteriaKV.model.Registration
 import com.kevinvilla.cafeteriaKV.repository.CafeteriaRepository
 import com.kevinvilla.cafeteriaKV.repository.ClienteRepository
 import com.kevinvilla.cafeteriaKV.service.CafeteriaService
@@ -83,7 +84,6 @@ class ClienteServiceTests {
 		clienteService.update(clienteMock)
 		val response = clienteService.save(clienteMock)
 		Assertions.assertEquals(response.id, clienteMock.id)
-		Assertions.assertEquals(response.name, clienteMock.name)
 		Assertions.assertEquals(response.apellido, clienteMock.apellido)
 		Assertions.assertEquals(response.cedula, clienteMock.cedula)
 
@@ -100,6 +100,28 @@ class ClienteServiceTests {
 
 		}
 	}
+
+	@Test
+	fun deleteIdCliente() {
+		Mockito.`when`(clienteRepository.findById(clienteMock.id)).thenReturn(clienteMock)
+		Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
+		val response = clienteService.delete(clienteMock.id)
+		Assertions.assertEquals(response, true)
+	}
+
+	@Test
+	fun deleteIsFailed() {
+
+		Assertions.assertThrows(Exception::class.java){
+			Mockito.`when`(clienteRepository.findById(clienteMock.id)).thenReturn(null)
+			Mockito.`when`(clienteRepository.save(Mockito.any(Cliente::class.java))).thenReturn(clienteMock)
+			val response = clienteService.delete(clienteMock.id)
+			Assertions.assertEquals(response, true)
+
+		}
+	}
+
+
 
 
 

@@ -1,5 +1,6 @@
 package com.kevinvilla.cafeteriaKV.service
 
+import com.kevinvilla.cafeteriaKV.model.Cafeteria
 import com.kevinvilla.cafeteriaKV.model.Usuario
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -20,40 +21,9 @@ class UsuarioService {
         return usuarioRepository.findAll()
     }
 
-    fun save(usuario: Usuario): Usuario{
-
-
-        return usuarioRepository.save(usuario)
-    }
-
-
-
-
-
-
-    fun getUsuario (username: String?): Usuario? {
-
-        try {
-
-            val response = usuarioRepository.findByUsername(username)
-                    ?: throw Exception("Usuario no exixte")
-            return response
-        }catch (ex: Exception) {
-
-            throw ResponseStatusException(
-                    HttpStatus.NOT_FOUND, ex.message, ex)
-        }
-
-
-    }
-
-    fun update(usuario: Usuario): Usuario {
-        return usuarioRepository.save(usuario)
-    }
-
     fun verificar(username: String?): Boolean{
         if(username?.length!!>7){
-           return false
+            return false
 
         }
         return true
@@ -68,7 +38,7 @@ class UsuarioService {
             return number
         }
 
-        }
+    }
 
     fun restNine(number: Int):Int{
         if (number >=10){
@@ -101,6 +71,67 @@ class UsuarioService {
         }
         return false
     }
+
+    fun save(usuario: Usuario): Usuario{
+
+
+        return usuarioRepository.save(usuario)
+    }
+
+
+    fun getUsuario (username: String?): Usuario? {
+
+        try {
+
+            val response = usuarioRepository.findByUsername(username)
+                    ?: throw Exception("Usuario no exixte")
+            return response
+        }catch (ex: Exception) {
+
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.message, ex)
+        }
+
+
+    }
+
+    fun update(usuario: Usuario): Usuario {
+        return usuarioRepository.save(usuario)
+    }
+
+    fun updateDescription(usuario: Usuario): Usuario {
+        try {
+            usuario.username?.takeIf {it.trim()?.isNotEmpty()}
+                    ?: throw Exception("el username no debe estar vacio")
+
+            val response =  usuarioRepository.findById(usuario.id)
+                    ?: throw Exception("El id ${usuario.id} en cafeteria no existe")
+            response.apply {
+                this.username = usuario.username
+            }
+            return usuarioRepository.save(usuario)
+        }
+        catch (ex: Exception) {
+            throw ResponseStatusException(
+                    HttpStatus.NOT_FOUND, ex.message, ex)
+        }
+    }
+
+    fun delete (id:Long?): Boolean{
+
+        try {
+            usuarioRepository.findById(id)
+                    ?: throw Exception(" No existe el Id")
+            usuarioRepository.deleteById(id!!)
+            return true
+        }catch (ex: Exception){
+            throw Exception()
+        }
+
+    }
+
+
+
 
 
 

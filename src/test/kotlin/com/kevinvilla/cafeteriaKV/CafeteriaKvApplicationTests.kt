@@ -2,6 +2,7 @@ package com.kevinvilla.cafeteriaKV
 
 import com.google.gson.Gson
 import com.kevinvilla.cafeteriaKV.model.Cafeteria
+import com.kevinvilla.cafeteriaKV.model.Cliente
 import com.kevinvilla.cafeteriaKV.model.Registration
 import com.kevinvilla.cafeteriaKV.repository.CafeteriaRepository
 import com.kevinvilla.cafeteriaKV.service.CafeteriaService
@@ -92,6 +93,26 @@ class CafeteriaKvApplicationTests {
 			Mockito.`when`(cafeteriaRepository.findById(cafeteriaMock.id)).thenReturn(null)
 			Mockito.`when`(cafeteriaRepository.save(Mockito.any(Cafeteria::class.java))).thenReturn(cafeteriaMock)
 			cafeteriaService.updateDescription(cafeteriaMock)
+
+		}
+	}
+
+	@Test
+	fun deleteId() {
+		Mockito.`when`(cafeteriaRepository.findById(cafeteriaMock.id)).thenReturn(cafeteriaMock)
+		Mockito.`when`(cafeteriaRepository.save(Mockito.any(Cafeteria::class.java))).thenReturn(cafeteriaMock)
+		val response = cafeteriaService.delete(cafeteriaMock.id)
+		Assertions.assertEquals(response, true)
+	}
+
+	@Test
+	fun deleteIsFailed() {
+
+		Assertions.assertThrows(Exception::class.java){
+			Mockito.`when`(cafeteriaRepository.findById(cafeteriaMock.id)).thenReturn(null)
+			Mockito.`when`(cafeteriaRepository.save(Mockito.any(Cafeteria::class.java))).thenReturn(cafeteriaMock)
+			val response = cafeteriaService.delete(cafeteriaMock.id)
+			Assertions.assertEquals(response, true)
 
 		}
 	}

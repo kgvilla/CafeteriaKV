@@ -57,9 +57,15 @@ class CafeteriaService {
         }
     }
 
-    fun  delete ( id : Long ): Boolean {
-        cafeteriaRepository.deleteById (id)
-        return  true
+    fun  delete ( id : Long? ): Boolean {
+        try {
+            cafeteriaRepository.findById(id)
+                    ?: throw Exception(" No existe el Id")
+            cafeteriaRepository.deleteById(id!!)
+            return true
+        }catch (ex: Exception){
+            throw Exception()
+        }
     }
 
     }

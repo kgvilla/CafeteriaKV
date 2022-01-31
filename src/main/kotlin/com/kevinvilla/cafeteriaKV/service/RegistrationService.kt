@@ -73,9 +73,17 @@ class RegistrationService {
                     HttpStatus.NOT_FOUND, ex.message, ex)
         }
     }
-    fun delete (id:Long): Boolean{
-        registrationRepository.deleteById(id)
-        return true
+    fun delete (id:Long?): Boolean{
+
+        try {
+            registrationRepository.findById(id)
+                    ?: throw Exception(" No existe el Id")
+            registrationRepository.deleteById(id!!)
+            return true
+        }catch (ex: Exception){
+            throw Exception()
+        }
+
     }
 
 }
