@@ -75,13 +75,17 @@ class UserServiceEvaTest {
 
     @Test
     fun validaUserlist(){
+        Mockito.`when`(usuarioRepository.findById(usuarioMock.id)).thenReturn(usuarioMock)
+        Mockito.`when`(usuarioRepository.save(Mockito.any(Usuario::class.java))).thenReturn(usuarioMock)
+        usuarioService.updateDescription(usuarioMock)
+        val response = usuarioService.updateDescription(usuarioMock)
+        Assertions.assertEquals(response.id, usuarioMock.id)
+        Assertions.assertEquals(response.username, usuarioMock.username)
+        Assertions.assertEquals(response.password, usuarioMock.password)
+        Assertions.assertEquals(response.cedula, usuarioMock.cedula)
 
-        Assertions.assertThrows(Exception::class.java){
-            Mockito.`when`(usuarioRepository.save(Mockito.any(Usuario::class.java))).thenReturn(usuarioMock)
-        usuarioService.validaUser(usuarioMock)
-        val response = usuarioService.validaUser(usuarioMock)
 
-        }
+
     }
 
 

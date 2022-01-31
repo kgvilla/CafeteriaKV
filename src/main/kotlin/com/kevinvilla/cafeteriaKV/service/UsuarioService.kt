@@ -136,24 +136,15 @@ class UsuarioService {
 
     }
 
-    fun validaUser(id: Long?): Boolean{
+    fun validaUser(id: Long?): String {
 
         try {
-            usuarioRepository.findById(id)
-                    ?: throw Exception(" No existe el Id")
-            usuarioRepository.deleteById(id!!)
-            return false
-        }catch (ex: Exception){
+            val lista = listOf<String>("blanda", "fibra", "lacteos")
+            return "no existe"
 
-            throw Exception()
         }
 
-
     }
-
-
-
-
 }
 
 
