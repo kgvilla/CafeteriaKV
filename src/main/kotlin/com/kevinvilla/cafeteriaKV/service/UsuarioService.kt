@@ -139,7 +139,7 @@ class UsuarioService {
     fun validaUser(id: Long?): String {
 
         try {
-            val lista = listOf<String>("blanda", "fibra", "lacteos")
+            val lista = listOf<String>()
             return "no existe"
 
         }
