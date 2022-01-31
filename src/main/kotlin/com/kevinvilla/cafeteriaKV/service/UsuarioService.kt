@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 import com.kevinvilla.cafeteriaKV.repository.UsuarioRepository
+import org.springframework.boot.context.properties.bind.Bindable
+import org.springframework.boot.context.properties.bind.Bindable.listOf
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
 
@@ -105,7 +107,7 @@ class UsuarioService {
                     ?: throw Exception("el username no debe estar vacio")
 
             val response =  usuarioRepository.findById(usuario.id)
-                    ?: throw Exception("El id ${usuario.id} en cafeteria no existe")
+                    ?: throw Exception("El id ${usuario.id} en usuario no existe")
             response.apply {
                 this.username = usuario.username
             }
@@ -116,6 +118,10 @@ class UsuarioService {
                     HttpStatus.NOT_FOUND, ex.message, ex)
         }
     }
+
+
+
+
 
     fun delete (id:Long?): Boolean{
 
@@ -130,7 +136,20 @@ class UsuarioService {
 
     }
 
+    fun validaUser(id: Long?): Boolean{
 
+        try {
+            usuarioRepository.findById(id)
+                    ?: throw Exception(" No existe el Id")
+            usuarioRepository.deleteById(id!!)
+            return false
+        }catch (ex: Exception){
+
+            throw Exception()
+        }
+
+
+    }
 
 
 
